@@ -3,7 +3,7 @@
     "mode": "ALL"
   },
   "explorationSampling": {
-    "_refreshTrigger": 0,
+    "_refreshTrigger": 1,
     "selection": {
       "filter": {
         "distinct": false,
@@ -20,13 +20,59 @@
       "maxStoredBytes": 104857600,
       "targetRatio": 0.02,
       "maxReadUncompressedBytes": -1,
-      "samplingMethod": "HEAD_SEQUENTIAL"
+      "samplingMethod": "RANDOM_FIXED_NB_EXACT"
     },
     "autoRefreshSample": false
   },
   "explorationFilters": [],
-  "exploreUIParams": {},
-  "steps": [],
+  "origin": "PREPARE_RECIPE",
+  "exploreUIParams": {
+    "autoRefresh": true
+  },
+  "steps": [
+    {
+      "preview": false,
+      "metaType": "PROCESSOR",
+      "disabled": false,
+      "type": "GeoIPResolver",
+      "params": {
+        "inCol": "ip",
+        "extract_country": true,
+        "extract_countrycode3": false,
+        "extract_city": false,
+        "extract_latlng": false,
+        "extract_countrycode": true,
+        "extract_postalcode": false,
+        "extract_timezone": false,
+        "outColPrefix": "ip_",
+        "extract_continentcode": false,
+        "extract_region": false,
+        "extract_geopoint": true
+      },
+      "alwaysShowComment": false
+    },
+    {
+      "preview": false,
+      "metaType": "PROCESSOR",
+      "disabled": false,
+      "type": "PythonUDF",
+      "params": {
+        "mode": "CELL",
+        "envSelection": {
+          "envMode": "INHERIT"
+        },
+        "stopOnError": true,
+        "pythonSourceCode": "def process(row):\n    id_ \u003d row[\u0027customer_id\u0027]\n    if id_[-1] \u003d\u003d \u0027d\u0027:\n        return 1\n    else:\n        return 0",
+        "useKernel": false,
+        "column": "out",
+        "sourceColumnsList": [],
+        "usePythonUnicode": true,
+        "vectorSize": 256,
+        "vectorize": false
+      },
+      "alwaysShowComment": false
+    }
+  ],
   "maxProcessedMemTableBytes": -1,
   "previewMode": "ALL_ROWS",
   "vizSampling": {
@@ -34,7 +80,21 @@
     "autoRefreshSample": false
   },
   "analysisColumnData": {},
-  "columnWidthsByName": {},
+  "columnWidthsByName": {
+    "ip_region": 190,
+    "ip_country_code": 128,
+    "campain": 100,
+    "ip": 120,
+    "original_dataset": 135,
+    "ip_country": 141,
+    "out": 100,
+    "pages_visited": 113,
+    "ip_city": 120,
+    "customer_id": 127,
+    "ip_geopoint": 190,
+    "ip_region_hierarchy": 190,
+    "ip_region_code": 120
+  },
   "sorting": [],
   "globalSearchQuery": "",
   "coloring": {
